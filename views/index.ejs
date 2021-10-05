@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<meta name='viewport' content='width=device-width,initial-scale=1.0'>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Gym Queue</title>
+    <style>
+      .fancy{
+      	color: red; darkblue;
+  	}
+      .surround{
+        border: 2px solid black;
+        border-radius: 5px;
+      }
+      input:hover{
+        box-shadow: 5px 10px 18px black;
+      }
+      .center{
+        margin: 0;
+        position: absolute;
+        left: 50%;
+        -ms-transform: translate(-50%,-50%);
+        transform: translate(-50%,-50%);
+      }
+      body{
+        background-image: url("https://therapygymnastics.com/wp-content/uploads/2015/12/floor-background.jpg");
+        height: 100%;
+        background-repeat: repeat;
+        background-position: center;
+        background-size: cover cover;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1 style='text-align:center;'>View 34 Gym Availability</h1>
+    <section data-position="add-quote">
+      <h5 style='text-align:center;' id='date'></h5>
+      <h5 style='text-align:center;' id='currenttime'></h5>
+      <h5 style='text-align:center;' id='availability'></h5>
+      <br>
+      <h2 style='text-align:center;'>Claim your spot</h2>
+      <div class='center'>
+        <form action="/quotes" method="POST">
+          <input type="text" placeholder="name" name="name" />
+          <input type="text" placeholder="apartment" name="apartment" />
+          <input type="text" placeholder="time" name="time" />
+
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </section>
+    <br><br>
+
+      <section data-position="delete-quote">
+        <div>
+          <h2 style='text-align:center;'>Relinquish your spot</h2>
+          <br>
+          <div class='center'>
+            <p>
+              Enter your info to give up your spot for another person
+            </p>
+            <input type="text" placeholder="name" id="iname">
+            <input type="text" placeholder="apartment" id="iapt">
+            <button onclick="tempfunc()" id="delete-button">Give up spot</button>
+          </div>
+        </div>
+        <div id="message"></div>
+      </section>
+      <br><br>
+
+      <section data-position="quotes">
+        <h2 style='text-align:center;'>Claimed times</h2>
+        <br><br><br><br>
+        <ul class="quotes">
+          <div class='center'>
+            <% for(var i = 0; i < quotes.length; i++) {%>
+            <li class="quote">
+              <span><%= quotes[i].name %></span>,
+              <span><%= quotes[i].apartment %></span>,
+              <span><%= quotes[i].time %></span>
+            </li>
+            <% } %>
+          </div>
+        </ul>
+      </section>
+
+      <script src="/main.js"></script>
+      <script>
+      var date=new Date();
+      var day=date.toString().slice(4,15)
+      var militarytime=date.toString().slice(16,21)
+
+      function tempfunc(){
+        var name=document.getElementById("iname").value
+        var apt=document.getElementById("iapt").value
+        deleter(name,apt)
+      }
+
+      function militaryconverter(time){
+        var hold=time.split(':')
+        var hour=Number(hold[0])
+        var minute=Number(hold[1])
+        if (hour>=1 && hour<=11){
+          return time+' AM'
+        }
+        if (hour>=13 && hour<=23){
+          if (minute<10){
+            return hour-12+':0'+minute+' PM'
+          }
+          else {
+            return hour-12+':'+minute+' PM'
+          }
+        }
+        if (hour==0){
+          if (minute<10){
+            return hour+12+':0'+minute+' AM'
+          }
+          else {
+            return hour+12+':'+minute+' AM'
+          }
+        }
+        if (hour==12){
+          return time+' PM'
+        }
+      }
+
+      function upto(time){
+        var hold=time.split(':')
+        var hour=Number(hold[0])
+        var minute=Number(hold[1])
+        if (minute>15){
+          var hold=hour+2+':00'
+          return militaryconverter(hold)
+        }
+        else {
+          var hold=hour+1+':00'
+          return militaryconverter(hold)
+        }
+      }
+      var current=militaryconverter(militarytime)
+
+      function display(){
+        document.getElementById("date").innerHTML=date;
+        document.getElementById("currenttime").innerHTML='Current Time: '+current;
+        // document.getElementById("availability").innerHTML='Showing Openings Up To: '+upto(militarytime)+' today';
+      }
+
+      setInterval(display(),3000)
+
+      </script>
+  </body>
+</html>
