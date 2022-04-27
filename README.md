@@ -1,5 +1,6 @@
 # gymqueue
-This is a simple queueing service I created to address problems with the gym in my apartment. 
+This is an independent software project that I created in preparation for graduate school. 
+It is a simple queueing service I created to address problems with the gym in my apartment. 
 The building put a limit of 10 visitors per hour due to COVID-19, and had a paper sign up system 
 which allowed for insincere reservations. This system allows for tenants to claim a spot by entering 
 their name, apartment and time, and to relinquish their spot to another person by entering their 
